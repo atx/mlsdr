@@ -1,0 +1,220 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:93lc56bt
+LIBS:ltc22xx
+LIBS:ncp700b
+LIBS:sma
+LIBS:lp5912
+LIBS:r820t
+LIBS:10m08scu169
+LIBS:ft232h
+LIBS:asv-xx
+LIBS:mlaticka-sdr-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 6 7
+Title "Analog PSU"
+Date ""
+Rev "v1.0"
+Comp "Josef Gajdusek <atx@atx.name>"
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L LP5912 U8
+U 1 1 583F46FC
+P 5975 3975
+F 0 "U8" H 6175 3625 60  0000 C CNN
+F 1 "LP5912-3.3" H 5975 4275 60  0000 C CNN
+F 2 "footprints:WSON-6-DRV" H 5975 3975 60  0001 C CNN
+F 3 "" H 5975 3975 60  0001 C CNN
+	1    5975 3975
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR067
+U 1 1 583F475E
+P 5975 4425
+F 0 "#PWR067" H 5975 4175 50  0001 C CNN
+F 1 "GND" H 5975 4275 50  0000 C CNN
+F 2 "" H 5975 4425 50  0000 C CNN
+F 3 "" H 5975 4425 50  0000 C CNN
+	1    5975 4425
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5875 4425 6075 4425
+Wire Wire Line
+	5875 4425 5875 4375
+Wire Wire Line
+	5975 4425 5975 4375
+Wire Wire Line
+	6075 4425 6075 4375
+Connection ~ 5975 4425
+$Comp
+L C_Small C51
+U 1 1 583F4790
+P 5425 3925
+F 0 "C51" H 5435 3995 50  0000 L CNN
+F 1 "1u" H 5435 3845 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0402" H 5425 3925 50  0001 C CNN
+F 3 "" H 5425 3925 50  0000 C CNN
+	1    5425 3925
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5625 3775 5625 3925
+$Comp
+L GND #PWR068
+U 1 1 583F47FB
+P 5425 4025
+F 0 "#PWR068" H 5425 3775 50  0001 C CNN
+F 1 "GND" H 5425 3875 50  0000 C CNN
+F 2 "" H 5425 4025 50  0000 C CNN
+F 3 "" H 5425 4025 50  0000 C CNN
+	1    5425 4025
+	1    0    0    -1  
+$EndComp
+$Comp
+L INDUCTOR_SMALL FB4
+U 1 1 583F481D
+P 4525 3775
+F 0 "FB4" H 4525 3875 50  0000 C CNN
+F 1 "BEAD (0.5A)" H 4525 3725 50  0000 C CNN
+F 2 "Resistors_SMD:R_0603" H 4525 3775 50  0001 C CNN
+F 3 "" H 4525 3775 50  0000 C CNN
+	1    4525 3775
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR069
+U 1 1 583F4B16
+P 4225 3725
+F 0 "#PWR069" H 4225 3575 50  0001 C CNN
+F 1 "+5V" H 4225 3865 50  0000 C CNN
+F 2 "" H 4225 3725 50  0000 C CNN
+F 3 "" H 4225 3725 50  0000 C CNN
+	1    4225 3725
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4225 3725 4225 3775
+Wire Wire Line
+	4225 3775 4275 3775
+Wire Wire Line
+	4775 3775 5625 3775
+Wire Wire Line
+	5425 3775 5425 3825
+Connection ~ 5425 3775
+Text GLabel 7325 3775 2    59   Input ~ 0
+3.3V_A
+$Comp
+L C_Small C52
+U 1 1 583F4EA5
+P 6550 3925
+F 0 "C52" H 6560 3995 50  0000 L CNN
+F 1 "1u" H 6560 3845 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0402" H 6550 3925 50  0001 C CNN
+F 3 "" H 6550 3925 50  0000 C CNN
+	1    6550 3925
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR070
+U 1 1 583F4F45
+P 6550 4025
+F 0 "#PWR070" H 6550 3775 50  0001 C CNN
+F 1 "GND" H 6550 3875 50  0000 C CNN
+F 2 "" H 6550 4025 50  0000 C CNN
+F 3 "" H 6550 4025 50  0000 C CNN
+	1    6550 4025
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6325 3775 7325 3775
+Wire Wire Line
+	6550 3775 6550 3825
+Connection ~ 6550 3775
+$Comp
+L C_Small C50
+U 1 1 583F501A
+P 5125 3925
+F 0 "C50" H 5135 3995 50  0000 L CNN
+F 1 "10u" H 5135 3845 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805" H 5125 3925 50  0001 C CNN
+F 3 "" H 5125 3925 50  0000 C CNN
+	1    5125 3925
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR071
+U 1 1 583F5020
+P 5125 4025
+F 0 "#PWR071" H 5125 3775 50  0001 C CNN
+F 1 "GND" H 5125 3875 50  0000 C CNN
+F 2 "" H 5125 4025 50  0000 C CNN
+F 3 "" H 5125 4025 50  0000 C CNN
+	1    5125 4025
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5125 3775 5125 3825
+$Comp
+L C_Small C53
+U 1 1 583F5130
+P 6850 3925
+F 0 "C53" H 6860 3995 50  0000 L CNN
+F 1 "10u" H 6860 3845 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805" H 6850 3925 50  0001 C CNN
+F 3 "" H 6850 3925 50  0000 C CNN
+	1    6850 3925
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR072
+U 1 1 583F5136
+P 6850 4025
+F 0 "#PWR072" H 6850 3775 50  0001 C CNN
+F 1 "GND" H 6850 3875 50  0000 C CNN
+F 2 "" H 6850 4025 50  0000 C CNN
+F 3 "" H 6850 4025 50  0000 C CNN
+	1    6850 4025
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6850 3775 6850 3825
+Connection ~ 5125 3775
+Connection ~ 6850 3775
+$EndSCHEMATC

@@ -1,0 +1,10 @@
+*.vcd
+*.sim
+output_files/
+.lvimrc
+incremental_db/
+.qsys_edit
+greybox_tmp/
+simulation/
+*.rpt
+db/

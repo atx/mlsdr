@@ -1,0 +1,224 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2016  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel MegaCore Function License Agreement, or other 
+# applicable license agreement, including, without limitation, 
+# that your use is for the sole purpose of programming logic 
+# devices manufactured by Intel and sold by Intel or its 
+# authorized distributors.  Please refer to the applicable 
+# agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 16.1.0 Build 196 10/24/2016 SJ Lite Edition
+# Date created = 17:26:35  November 29, 2016
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		toplevel_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "MAX 10"
+set_global_assignment -name DEVICE 10M08SCU169C8G
+set_global_assignment -name TOP_LEVEL_ENTITY toplevel
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 16.1.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "17:26:35  NOVEMBER 29, 2016"
+set_global_assignment -name LAST_QUARTUS_VERSION "16.1.0 Lite Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name DEVICE_FILTER_PACKAGE UFBGA
+set_global_assignment -name DEVICE_FILTER_PIN_COUNT 169
+set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 8
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
+set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_location_assignment PIN_N2 -to ADC_CLK
+set_location_assignment PIN_A12 -to FT_D2
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_D2
+set_location_assignment PIN_B13 -to FT_D4
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_D4
+set_instance_assignment -name RESERVE_PIN AS_BIDIRECTIONAL -to FT_D4
+set_instance_assignment -name RESERVE_PIN AS_BIDIRECTIONAL -to FT_D2
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_CLK
+set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to ADC_CLK
+set_location_assignment PIN_C12 -to FT_D5
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_D5
+set_instance_assignment -name RESERVE_PIN AS_BIDIRECTIONAL -to FT_D5
+set_location_assignment PIN_B11 -to FT_D1
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_D1
+set_instance_assignment -name RESERVE_PIN AS_BIDIRECTIONAL -to FT_D1
+set_location_assignment PIN_B12 -to FT_D3
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_D3
+set_instance_assignment -name RESERVE_PIN AS_BIDIRECTIONAL -to FT_D3
+set_location_assignment PIN_C13 -to FT_D6
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_D6
+set_instance_assignment -name RESERVE_PIN AS_BIDIRECTIONAL -to FT_D6
+set_location_assignment PIN_D13 -to FT_D7
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_D7
+set_instance_assignment -name RESERVE_PIN AS_BIDIRECTIONAL -to FT_D7
+set_location_assignment PIN_E13 -to FT_nRXF
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_nRXF
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to FT_nRXF
+set_location_assignment PIN_F13 -to FT_CLK
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_CLK
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to FT_CLK
+set_location_assignment PIN_A11 -to FT_D0
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_D0
+set_instance_assignment -name RESERVE_PIN AS_BIDIRECTIONAL -to FT_D0
+set_location_assignment PIN_H13 -to FT_nTXE
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_nTXE
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to FT_nTXE
+set_location_assignment PIN_J13 -to FT_nRD
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_nRD
+set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to FT_nRD
+set_location_assignment PIN_K13 -to FT_nWR
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_nWR
+set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to FT_nWR
+set_location_assignment PIN_L13 -to FT_nOE
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_nOE
+set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to FT_nOE
+set_location_assignment PIN_M13 -to FT_RST
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to FT_RST
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to FT_RST
+set_location_assignment PIN_H1 -to ADC_D8
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D8
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D8
+set_location_assignment PIN_E1 -to ADC_D10
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D10
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D10
+set_location_assignment PIN_F1 -to ADC_D9
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D9
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D9
+set_location_assignment PIN_B1 -to ADC_D13
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D13
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D13
+set_location_assignment PIN_D1 -to ADC_D11
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D11
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D11
+set_location_assignment PIN_K2 -to ADC_D4
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D4
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D4
+set_location_assignment PIN_K1 -to ADC_D5
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D5
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D5
+set_location_assignment PIN_L2 -to ADC_D2
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D2
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D2
+set_location_assignment PIN_N3 -to PPS
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to PPS
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to PPS
+set_location_assignment PIN_L1 -to ADC_D3
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D3
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D3
+set_location_assignment PIN_M2 -to ADC_D0
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D0
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D0
+set_location_assignment PIN_M1 -to ADC_D1
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D1
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D1
+set_location_assignment PIN_J2 -to ADC_D6
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D6
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D6
+set_location_assignment PIN_J1 -to ADC_D7
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D7
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to ADC_D7
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D7 -section_id ADC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D8 -section_id ADC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D10 -section_id ADC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D9 -section_id ADC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D13 -section_id ADC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D11 -section_id ADC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D4 -section_id ADC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D5 -section_id ADC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D2 -section_id ADC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D3 -section_id ADC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D0 -section_id ADC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D1 -section_id ADC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_D6 -section_id ADC
+set_location_assignment PIN_C1 -to MISC
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to MISC
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to MISC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_D2 -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_D4 -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_D5 -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_D1 -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_D3 -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_D6 -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_D7 -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_nRXF -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_CLK -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_D0 -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_nTXE -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_nRD -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_nWR -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_nOE -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER FT_RST -section_id FTDI
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER PPS -section_id MISC
+set_location_assignment PIN_N4 -to CLK_EXT
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to CLK_EXT
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to CLK_EXT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER CLK_EXT -section_id MISC
+set_location_assignment PIN_B2 -to TUNER_CLK
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to TUNER_CLK
+set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to TUNER_CLK
+set_location_assignment PIN_A2 -to SCL
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to SCL
+set_instance_assignment -name RESERVE_PIN AS_BIDIRECTIONAL -to SCL
+set_location_assignment PIN_A3 -to SDA
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to SDA
+set_location_assignment PIN_A10 -to LED1
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to LED1
+set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_GROUND -to LED1
+set_location_assignment PIN_A9 -to LED2
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to LED2
+set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_VCC -to LED2
+set_instance_assignment -name RESERVE_PIN AS_BIDIRECTIONAL -to SDA
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER TUNER_CLK -section_id MISC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER SCL -section_id MISC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER SDA -section_id MISC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER LED1 -section_id MISC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER LED2 -section_id MISC
+set_location_assignment PIN_G10 -to CLK_INT
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to CLK_INT
+set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to CLK_INT
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER CLK_INT -section_id MISC
+set_global_assignment -name ASSIGNMENT_GROUP_MEMBER ADC_CLK -section_id ADC
+set_global_assignment -name ENABLE_OCT_DONE OFF
+set_global_assignment -name STRATIXV_CONFIGURATION_SCHEME "PASSIVE SERIAL"
+set_global_assignment -name USE_CONFIGURATION_DEVICE ON
+set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
+set_global_assignment -name GENERATE_SVF_FILE ON
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
+set_global_assignment -name QIP_FILE pll.qip
+set_global_assignment -name QIP_FILE ft232_fifo.qip
+set_global_assignment -name QIP_FILE ft232_fifo_short.qip
+set_global_assignment -name QIP_FILE fifo8_short.qip
+set_global_assignment -name POWER_USE_INPUT_FILES OFF
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
