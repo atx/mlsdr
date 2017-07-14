@@ -1,0 +1,13 @@
+ - Decreased solder mask clearance on FPGA balls
+ - Add bottom copper plane for analog LDO
+ - External oscillator connector add power pin + labels
+ - USB connector more mechanically durable footprint
+ - Series termination on the FPGA end of the FTDI-FPGA bus
+ - Switch oscillator package on FTDI
+ - Add 30MHz oscillator for the FPGA
+ - Shorten to fit to 30x15x1.5
+ - Antenna +5V
+ - Add proper multipin flex connector
+ - WS18 RGB LED
+ - Unmask the mounting holes
+TODO:
