@@ -741,7 +741,8 @@ struct mlsdr *mlsdr_connect(const struct mlsdr_connect_cfg cfg)
 		uint8_t val;
 		mlsdr_read_register(mlsdr, regids[i][0], &val);
 		if (val != regids[i][1]) {
-			log_error(mlsdr, "The ID register sequence does not match");
+			log_error(mlsdr, "The ID register sequence does not match (%02x != %02x)",
+					  val, regids[i][1]);
 			goto error;
 		}
 	}
