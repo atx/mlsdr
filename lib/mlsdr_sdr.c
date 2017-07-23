@@ -207,18 +207,20 @@ int main(int argc, char *argv[])
 	// Not sure if we want this or not...
 	//int flags = fcntl(fileno(stdout), F_GETFL);
 	//fcntl(fileno(stdout), F_SETFL, flags | O_NONBLOCK);
-	r820t_tune(mlsdr->r820t, args.frequency);
-	if (args.gain >= 0) {
-		r820t_set_gain(mlsdr->r820t, args.gain);
-	}
-	if (args.gain_lna >= 0) {
-		r820t_set_gain_stage(mlsdr->r820t, R820T_GAIN_LNA, args.gain_lna, NULL);
-	}
-	if (args.gain_mixer >= 0) {
-		r820t_set_gain_stage(mlsdr->r820t, R820T_GAIN_MIXER, args.gain_mixer, NULL);
-	}
-	if (args.gain_vga >= 0) {
-		r820t_set_gain_stage(mlsdr->r820t, R820T_GAIN_VGA, args.gain_vga, NULL);
+	if (mlsdr->r820t != NULL) {
+		r820t_tune(mlsdr->r820t, args.frequency);
+		if (args.gain >= 0) {
+			r820t_set_gain(mlsdr->r820t, args.gain);
+		}
+		if (args.gain_lna >= 0) {
+			r820t_set_gain_stage(mlsdr->r820t, R820T_GAIN_LNA, args.gain_lna, NULL);
+		}
+		if (args.gain_mixer >= 0) {
+			r820t_set_gain_stage(mlsdr->r820t, R820T_GAIN_MIXER, args.gain_mixer, NULL);
+		}
+		if (args.gain_vga >= 0) {
+			r820t_set_gain_stage(mlsdr->r820t, R820T_GAIN_VGA, args.gain_vga, NULL);
+		}
 	}
 
 	mlsdr_adc_enable(mlsdr);
