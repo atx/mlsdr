@@ -8,3 +8,10 @@ greybox_tmp/
 simulation/
 *.rpt
 db/
+.*
+target/
+build/
+bin/
+*.anno
+*.fir
+test_run_dir/

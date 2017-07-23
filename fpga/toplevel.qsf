@@ -144,17 +144,13 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to CLK_INT
 set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to CLK_INT
 set_global_assignment -name ENABLE_OCT_DONE OFF
 set_global_assignment -name STRATIXV_CONFIGURATION_SCHEME "PASSIVE SERIAL"
-set_global_assignment -name USE_CONFIGURATION_DEVICE ON
+set_global_assignment -name USE_CONFIGURATION_DEVICE OFF
 set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
 set_global_assignment -name GENERATE_SVF_FILE ON
 set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -rise
 set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
 set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
 set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
-set_global_assignment -name QIP_FILE pll.qip
-set_global_assignment -name QIP_FILE ft232_fifo.qip
-set_global_assignment -name QIP_FILE ft232_fifo_short.qip
-set_global_assignment -name QIP_FILE fifo8_short.qip
 set_global_assignment -name POWER_USE_INPUT_FILES OFF
 set_location_assignment PIN_C1 -to ADC_D12
 set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to ADC_D12
@@ -168,4 +164,16 @@ set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNA
 set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to FT_nRXF
 set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to FT_nTXE
 set_instance_assignment -name RESERVE_PIN AS_INPUT_TRI_STATED -to FT_RST
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name FLOW_ENABLE_POWER_ANALYZER ON
+set_global_assignment -name POWER_DEFAULT_INPUT_IO_TOGGLE_RATE "12.5 %"
+set_global_assignment -name EXTERNAL_FLASH_FALLBACK_ADDRESS 00000000
+set_global_assignment -name INTERNAL_FLASH_UPDATE_MODE "SINGLE IMAGE"
+set_global_assignment -name VERILOG_FILE build/ADCReader.v
+set_global_assignment -name VERILOG_FILE build/Top.v
+set_global_assignment -name QIP_FILE pll.qip
+set_global_assignment -name QIP_FILE ft232_fifo.qip
+set_global_assignment -name QIP_FILE ft232_fifo_short.qip
+set_global_assignment -name QIP_FILE fifo8_short.qip
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

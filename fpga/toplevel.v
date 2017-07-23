@@ -42,7 +42,7 @@ module toplevel (
 		inout wire SCL,
 		inout wire SDA,
 		output wire LED1,
-		output wire LED2,
+		output wire LED_DATA,
 		output wire TUNER_CLK
 	);
 
@@ -60,17 +60,9 @@ module toplevel (
 		.outclk(clk)
 	);
 	wire nreset = !ft_rst_sync;
+	assign LED1 = FT_RST;
 	//wire nreset = 1;
 
-	// This is shitty and will be replaced with a proper 30MHz oscillator in
-	// the next board revision
-	//clkdiv #(.DIV(2)) tunerdiv (
-	//	.nreset(1'b1),
-	//	.clk(clk),
-	//	.out(TUNER_CLK)
-	//);
-
-	//assign LED2 = CLK_EXT;
 	assign TUNER_CLK = CLK_EXT;
 
 	wire[7:0] bus_address;
@@ -162,34 +154,17 @@ module toplevel (
 	wire adc_packer_valid;
 	wire[11:0] adc_packer_data;
 
-	wire adc_nreset = nreset && reg_adctl_val[0];
-	adc #(.DIV(8), .BITS(12)) adc (
-		.nreset(adc_nreset),
-		.clk(clk),
+	ADCReader adcreader (
+		.reset(!nreset),
+		.clock(clk),
+		.io_enable(reg_adctl_val[0]),
 
-		.mode(reg_adctl_val[2:1]),
-
-		.adc_data({ADC_D11, ADC_D10, ADC_D9, ADC_D8, ADC_D7, ADC_D6, ADC_D5,
+		.io_adc_data({ADC_D11, ADC_D10, ADC_D9, ADC_D8, ADC_D7, ADC_D6, ADC_D5,
 				   ADC_D4, ADC_D3, ADC_D2, ADC_D1, ADC_D0}),
-		.adc_clk(ADC_CLK),
+		.io_adc_clock(ADC_CLK),
 
-		.out(adc_packer_data),
-		.valid(adc_packer_valid)
-	);
-
-	pwm #(.BITS(32), .BITS_WIDTH(32)) led_status_pwm (
-		.nreset(1'b1), // The reset may be asserted on powerup, yet we want to have a status LED
-		.clk(clk),
-
-		.period(!nreset ?      500000000 :  // We are in reset
-			    (!adc_nreset ? 500000000 :  // ADC is not enabled
-				                40000000)), // ADC running
-
-		.width(!nreset ?        10000000 :
-		       (!adc_nreset ?   40000000 :
-				                20000000)),
-
-		.out(LED1)
+		.io_out_valid(adc_packer_valid),
+		.io_out_bits(adc_packer_data)
 	);
 
 	wire packer_packeter_valid;
@@ -271,8 +246,6 @@ module toplevel (
 		.rddata(ftdi_rddata),
 		.rdreq(ftdi_rdreq),
 		.rdempty(ftdi_rdempty),
-
-		//.test(LED2)
 	);
 
 	cmdparser cmdparser (
