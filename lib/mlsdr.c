@@ -755,6 +755,8 @@ struct mlsdr *mlsdr_connect(const struct mlsdr_connect_cfg cfg)
 		mlsdr->r820t = r820t_new(mlsdr, cfg.ext_osc_freq);
 	}
 
+	log_info(mlsdr, "Device successfully initialized");
+
 	return mlsdr;
 
 error:
