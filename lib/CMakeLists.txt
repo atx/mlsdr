@@ -47,6 +47,9 @@ target_link_libraries (mlsdr_sdr mlsdr pthread)
 add_executable (mlsdr_list mlsdr_list.c)
 target_link_libraries (mlsdr_list mlsdr)
 
+add_executable (mlsdr_test mlsdr_test.c)
+target_link_libraries (mlsdr_test mlsdr pthread)
+
 set_target_properties (mlsdr PROPERTIES
 	PUBLIC_HEADER "mlsdr.h;r820t.h;regmap.h")
 
@@ -57,7 +60,7 @@ install (TARGETS mlsdr
 	PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/${PROJECT_NAME}"
 		COMPONENT dev)
 
-install (TARGETS mlsdr_sdr mlsdr_list
+install (TARGETS mlsdr_sdr mlsdr_list mlsdr_test
 	EXPORT mlsdr-targets
 	RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin)
 
