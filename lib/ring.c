@@ -61,7 +61,7 @@ size_t mlsdr_ring_push(struct mlsdr_ring *ring, void *els, size_t nelems)
 
 	size_t nwptr = ring->wptr + nelems;
 
-	size_t fr = min(nwptr, ring->nelems - 1) - ring->wptr;
+	size_t fr = min(nwptr, ring->nelems) - ring->wptr;
 	memcpy(ring->ptr + ring->wptr * ring->elsize, els, fr * ring->elsize);
 	if (nwptr >= ring->nelems) {
 		nwptr = nwptr % ring->nelems;
