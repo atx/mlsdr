@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 				first = false;
 			} else {
 				if (at != rawdata[i]) {
-					mlsdr_log_warn(mlsdr->logctx, "Expected %d, got %d", at, rawdata[i]);
+					mlsdr_log_warn(mlsdr->logctx, "Expected %d, got %d ([%d])", at, rawdata[i], i);
 					at = rawdata[i];
 				}
 			}
