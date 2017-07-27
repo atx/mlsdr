@@ -154,6 +154,8 @@ module toplevel (
 	wire adc_packer_valid;
 	wire[11:0] adc_packer_data;
 
+	wire[1:0] reg_adctl_mode = reg_adctl_val[2:1];
+
 	ADCReader adcreader (
 		.reset(!nreset),
 		.clock(clk),
@@ -167,6 +169,34 @@ module toplevel (
 		.io_out_bits(adc_packer_data)
 	);
 
+	wire sawtooth_packer_valid;
+	wire[11:0] sawtooth_packer_data;
+
+	PatternSawtooth patternsawtooth (
+		.reset(!nreset),
+		.clock(clk),
+		.io_enable(reg_adctl_val[0]),
+
+		.io_out_valid(sawtooth_packer_valid),
+		.io_out_bits(sawtooth_packer_data)
+	);
+
+	reg packer_valid;
+	reg[11:0] packer_data;
+
+	// TODO: Move this to a separate module or somewhere
+	always @* begin
+		if (reg_adctl_mode == 0) begin
+			packer_valid = adc_packer_valid;
+			packer_data = adc_packer_data;
+		end else if (reg_adctl_mode == 1) begin
+			packer_valid = sawtooth_packer_valid;
+			packer_data = sawtooth_packer_data;
+		end else begin
+			packer_valid = 1'b0;
+		end
+	end
+
 	wire packer_packeter_valid;
 	wire[7:0] packer_packeter_data;
 
@@ -174,8 +204,8 @@ module toplevel (
 		.nreset(nreset),
 		.clk(clk),
 
-		.in_valid(adc_packer_valid),
-		.in_data(adc_packer_data),
+		.in_valid(packer_valid),
+		.in_data(packer_data),
 
 		.out_valid(packer_packeter_valid),
 		.out_data(packer_packeter_data)
