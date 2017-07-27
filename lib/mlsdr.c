@@ -237,7 +237,13 @@ static void mlsdr_data_callback(struct mlsdr *mlsdr, uint8_t *buffer, int length
 		if (priv->p.samplecnt >= SAMPLE_BUFFER_LEN - 2) {
 			// We drop data if the adc has been disabled
 			if (atomic_load(&mlsdr->priv->adc_enabled)) {
-				mlsdr_ring_int16_t_push(mlsdr->ringsamples, priv->p.samples, priv->p.samplecnt);
+				size_t ret = mlsdr_ring_int16_t_push(mlsdr->ringsamples,
+													 priv->p.samples,
+													 priv->p.samplecnt);
+				if (ret < priv->p.samplecnt) {
+					log_warn(mlsdr, "Lost %d samples in the sample buffer",
+							 priv->p.samplecnt - ret)
+				}
 			}
 			priv->p.samplecnt = 0;
 		}
