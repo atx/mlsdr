@@ -26,7 +26,7 @@ class Registers extends Module {
     val Features = 0xf5
   }
 
-  def bitMash(bits: Seq[Boolean]) = (bits.foldLeft(0) { (v, x) => (v << 1) | (if (x) 1 else 0) }).U
+  def bitMash(bits: Seq[Boolean]) = (bits.foldLeft(0) { (v, x) => (v << 1) | (if (x) 1 else 0) })
 
   def attachBus(module: Register) = {
     // TL; DR: Mass-assignment does not work with Analog stuff
@@ -38,6 +38,15 @@ class Registers extends Module {
     module.io.wr := io.bus.wr
   }
 
+  def attachBus(module: RegisterConstant) = {
+    // TODO: Cleanup this mess...
+    module.io.nreset := !reset
+    module.io.clk := clock
+    attach(module.io.data, io.bus.data)
+    module.io.address := io.bus.address
+    module.io.rd := io.bus.rd
+  }
+
   val regADCtl = Module(new Register(Address.ADCtl, 0x00))
   attachBus(regADCtl)
   io.adc.enable := regADCtl.io.out(0)
@@ -45,14 +54,12 @@ class Registers extends Module {
 
   val BaseId = 0xf0
   for ((c, i) <- "atx".zipWithIndex) {
-    val regId = Module(new Register(Address.IdBase + i, 0xff))
+    val regId = Module(new RegisterConstant(Address.IdBase + i, c))
     attachBus(regId)
-    regId.io.maskvals := c.U(8.W)
   }
   val regScratch = Module(new Register(Address.Scratchpad, 0x00, 0xaa))
   attachBus(regScratch)
 
-  val regFeatures = Module(new Register(Address.Features, 0xff))
+  val regFeatures = Module(new RegisterConstant(Address.Features, bitMash(Seq(Config.hasTuner))))
   attachBus(regFeatures)
-  regFeatures.io.maskvals := bitMash(Seq(Config.hasTuner))
 }

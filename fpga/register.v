@@ -42,6 +42,22 @@ module register #(
 
 endmodule
 
+module register_constant #(
+		parameter ADDRESS = 8'h00,
+		parameter VALUE = 8'h00
+	) (
+		input wire nreset,
+		input wire clk,
+
+		input wire[7:0] address,
+		inout wire[7:0] data,
+		input wire rd
+	);
+
+	assign data = (address == ADDRESS && rd) ? VALUE : 8'hZZ;
+
+endmodule
+
 module register_fifo_rd #(
 		parameter ADDRESS = 8'h00
 	) (

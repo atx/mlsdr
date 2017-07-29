@@ -27,3 +27,20 @@ class Register(val address: Int, val mask: Int, val initval: Int = 0x00)
   override def desiredName = "register"
   suggestName(f"register_$address%02x")
 }
+
+
+class RegisterConstant(val address: Int, val value: Int)
+    extends BlackBox(Map("ADDRESS" -> address,
+                         "VALUE" -> value)) {
+  val io = IO(new Bundle {
+    val nreset = Input(Bool())
+    val clk = Input(Clock())
+
+    val address = Input(UInt(8.W))
+    val data = Analog(8.W)
+    val rd = Input(Bool())
+  })
+
+  override def desiredName = "register_constant"
+  suggestName(f"register_$address%02x")
+}
