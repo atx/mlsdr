@@ -89,8 +89,6 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
-	mlsdr_log_info(mlsdr->logctx, "baf");
-
 	// Sawtooth pattern
 	mlsdr_adc_set_mode(mlsdr, MLSDR_ADCTL_MODE_PAT1);
 
