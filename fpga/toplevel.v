@@ -86,7 +86,7 @@ module toplevel (
 		.io_adc_mode(reg_adctl_mode)
 	);
 
-	i2c #(.BASEADDR(8'h10), .CLKDIV(400)) i2c (
+	i2c #(.BASEADDR(8'h10), .CLKDIV(250)) i2c (
 		.nreset(nreset),
 		.clk(clk),
 
