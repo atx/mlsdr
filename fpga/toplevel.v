@@ -70,72 +70,20 @@ module toplevel (
 	wire bus_rd;
 	wire bus_wr;
 
-	// First bit = ADC enabled
-	wire[7:0] reg_adctl_val;
-	register #(.ADDRESS(8'h01)) reg_adctl (
-		.nreset(nreset),
-		.clk(clk),
+	wire reg_adctl_enable;
+	wire[1:0] reg_adctl_mode;
 
-		.address(bus_address),
-		.data(bus_data),
-		.rd(bus_rd),
-		.wr(bus_wr),
-		.out(reg_adctl_val)
-	);
-	register #(.ADDRESS(8'hf0), .MASK(8'hff)) regid1 (
-		.nreset(nreset),
-		.clk(clk),
+	Registers registers(
+		.reset(!nreset),
+		.clock(clk),
 
-		.address(bus_address),
-		.data(bus_data),
-		.rd(bus_rd),
-		.wr(bus_wr),
+		.io_bus_address(bus_address),
+		.io_bus_data(bus_data),
+		.io_bus_rd(bus_rd),
+		.io_bus_wr(bus_wr),
 
-		.maskvals(8'h61)
-	);
-	register #(.ADDRESS(8'hf1), .MASK(8'hff)) regid2 (
-		.nreset(nreset),
-		.clk(clk),
-
-		.address(bus_address),
-		.data(bus_data),
-		.rd(bus_rd),
-		.wr(bus_wr),
-
-		.maskvals(8'h74)
-	);
-	register #(.ADDRESS(8'hf2), .MASK(8'hff)) regid3 (
-		.nreset(nreset),
-		.clk(clk),
-
-		.address(bus_address),
-		.data(bus_data),
-		.rd(bus_rd),
-		.wr(bus_wr),
-
-		.maskvals(8'h78)
-	);
-	register #(.ADDRESS(8'hf3), .INITVAL(8'haa)) regscratch (
-		.nreset(nreset),
-		.clk(clk),
-
-		.address(bus_address),
-		.data(bus_data),
-		.rd(bus_rd),
-		.wr(bus_wr)
-	);
-
-	// TODO: Add config.h with defines for this
-	register #(.ADDRESS(8'hf5), .MASK(8'hff)) regfeatures (
-		.nreset(nreset),
-		.clk(clk),
-
-		.address(bus_address),
-		.data(bus_data),
-		.rd(bus_rd),
-		.wr(bus_wr),
-
-		.maskvals(8'b00000001)
+		.io_adc_enable(reg_adctl_enable),
+		.io_adc_mode(reg_adctl_mode)
 	);
 
 	i2c #(.BASEADDR(8'h10), .CLKDIV(400)) i2c (
@@ -154,12 +102,10 @@ module toplevel (
 	wire adc_packer_valid;
 	wire[11:0] adc_packer_data;
 
-	wire[1:0] reg_adctl_mode = reg_adctl_val[2:1];
-
 	ADCReader adcreader (
 		.reset(!nreset),
 		.clock(clk),
-		.io_enable(reg_adctl_val[0]),
+		.io_enable(reg_adctl_enable),
 
 		.io_adc_data({ADC_D11, ADC_D10, ADC_D9, ADC_D8, ADC_D7, ADC_D6, ADC_D5,
 				   ADC_D4, ADC_D3, ADC_D2, ADC_D1, ADC_D0}),
@@ -175,7 +121,7 @@ module toplevel (
 	PatternSawtooth patternsawtooth (
 		.reset(!nreset),
 		.clock(clk),
-		.io_enable(reg_adctl_val[0]),
+		.io_enable(reg_adctl_enable),
 
 		.io_out_valid(sawtooth_packer_valid),
 		.io_out_bits(sawtooth_packer_data)
