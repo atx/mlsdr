@@ -102,11 +102,16 @@ int main(int argc, char *argv[])
 	int16_t at = 0;
 	while (nsamples != 0 && !atomic_load(&args.terminating)) {
 		size_t toread = nsamples > 0 ? min(chunk, nsamples) : chunk;
-		ssize_t ret = mlsdr_read(mlsdr, rawdata, toread, 10000);
+		ssize_t ret = mlsdr_read(mlsdr, rawdata, toread, 2000);
 		if (ret < 0) {
-			fprintf(stderr, "Failed with %d\n", (int)ret);
+			mlsdr_log_error(mlsdr->logctx, "Failed with %ld\n", ret);
 			break;
 		}
+		if (ret == 0) {
+			mlsdr_log_error(mlsdr->logctx, "Timed out while waiting for samples\n");
+			break;
+		}
+
 		if (nsamples > 0) {
 			nsamples -= ret;
 		}
