@@ -6,41 +6,51 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental._
 
-class Register(val address: Int, val mask: Int, val initval: Int = 0x00)
-    extends BlackBox(Map("ADDRESS" -> address,
-                         "MASK" -> mask,
-                         "INITVAL" -> initval)) {
-  val io = IO(new Bundle {
-    val nreset = Input(Bool())
-    val clk = Input(Clock())
+class RegisterBus extends Bundle {
+  val address = Input(UInt(8.W))
+  val data = Analog(8.W)
+  val rd = Input(Bool())
+  val wr = Input(Bool())
 
-    val address = Input(UInt(8.W))
-    val data = Analog(8.W)
-    val rd = Input(Bool())
-    val wr = Input(Bool())
-
-    val maskvals = Input(UInt(8.W))
-
-    val out = Output(UInt(8.W))
-  })
-
-  override def desiredName = "register"
-  suggestName(f"register_$address%02x")
+  def <>(other: RegisterBus) = {
+    // Standard mass-assignment breaks with Analog for some reason
+    address <> other.address
+    attach(data, other.data)
+    rd <> other.rd
+    wr <> other.wr
+  }
 }
 
+class BaseRegister(val address: Int) extends MultiIOModule {
+  val bus = IO(new RegisterBus)
 
-class RegisterConstant(val address: Int, val value: Int)
-    extends BlackBox(Map("ADDRESS" -> address,
-                         "VALUE" -> value)) {
+  val data = Module(new Tristate(UInt(8.W)))
+  attach(data.io.tristate, bus.data)
+
+  val selected = bus.address === address.U
+  val readRequested = selected && bus.rd
+  val writeRequested = selected && bus.wr
+}
+
+class ConstantRegister(address: Int, val value: Int) extends BaseRegister(address) {
+  data.io.driven := readRequested
+  data.io.value := value.U
+}
+
+class MaskedRegister(address: Int, val mask: Int = 0x00, val initval: Int = 0x00) extends BaseRegister(address) {
   val io = IO(new Bundle {
-    val nreset = Input(Bool())
-    val clk = Input(Clock())
-
-    val address = Input(UInt(8.W))
-    val data = Analog(8.W)
-    val rd = Input(Bool())
+    val maskValues = Input(UInt(8.W))
+    val value = Output(UInt(8.W))
   })
 
-  override def desiredName = "register_constant"
-  suggestName(f"register_$address%02x")
+  val internal = RegInit(initval.U(8.W))
+
+  io.value := (internal & ~(mask.U(8.W))) | (io.maskValues & mask.U(8.W))
+
+  data.io.driven := readRequested
+  data.io.value := io.value
+
+  when (writeRequested) {
+    internal := data.io.out
+  }
 }

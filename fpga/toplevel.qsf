@@ -170,6 +170,7 @@ set_global_assignment -name FLOW_ENABLE_POWER_ANALYZER ON
 set_global_assignment -name POWER_DEFAULT_INPUT_IO_TOGGLE_RATE "12.5 %"
 set_global_assignment -name EXTERNAL_FLASH_FALLBACK_ADDRESS 00000000
 set_global_assignment -name INTERNAL_FLASH_UPDATE_MODE "SINGLE IMAGE"
+set_global_assignment -name VERILOG_FILE register.v
 set_global_assignment -name VERILOG_FILE build/Registers.v
 set_global_assignment -name VERILOG_FILE build/PatternSawtooth.v
 set_global_assignment -name VERILOG_FILE build/ADCReader.v
