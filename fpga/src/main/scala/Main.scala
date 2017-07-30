@@ -10,4 +10,5 @@ object Main extends App {
   chisel3.Driver.execute(defaultArgs ++ args, () => new Registers)
   chisel3.Driver.execute(defaultArgs ++ args, () => new ADCReader(12, Config.adcDivisor))
   chisel3.Driver.execute(defaultArgs ++ args, () => new PatternSawtooth(12, Config.adcDivisor))
+  chisel3.Driver.execute(defaultArgs ++ args, () => new Packer12to8)
 }

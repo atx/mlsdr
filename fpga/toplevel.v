@@ -143,18 +143,20 @@ module toplevel (
 		end
 	end
 
+	assign LED1 = reg_adctl_mode == 1;
+
 	wire packer_packeter_valid;
 	wire[7:0] packer_packeter_data;
 
-	packer_12to8 packer (
-		.nreset(nreset),
-		.clk(clk),
+	Packer12to8 packer (
+		.reset(!nreset),
+		.clock(clk),
 
-		.in_valid(packer_valid),
-		.in_data(packer_data),
+		.io_in_valid(packer_valid),
+		.io_in_bits(packer_data),
 
-		.out_valid(packer_packeter_valid),
-		.out_data(packer_packeter_data)
+		.io_out_valid(packer_packeter_valid),
+		.io_out_bits(packer_packeter_data)
 	);
 
 	wire packeter_ftdi_valid;
