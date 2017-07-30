@@ -70,34 +70,42 @@ static struct arguments args = {
 	.serno = NULL,
 };
 
-int main(int argc, char *argv[])
+enum test_result {
+	RESULT_SUCCESS = 0,
+	RESULT_FAILURE = 1,
+	RESULT_CRITICAL = 2
+};
+
+struct test {
+	const char *name;
+	enum test_result (*fn)(struct mlsdr *);
+};
+
+static enum test_result test_scratchpad(struct mlsdr *mlsdr)
 {
-	argp_parse(&argp_parser, argc, argv, 0, 0, &args);
-
-	atomic_store(&args.terminating, false);
-
-	struct mlsdr_connect_cfg cfg = MLSDR_DEFAULT_CFG;
-	cfg.loglevel = args.loglevel;
-	cfg.serno = args.serno;
-	if (args.ext_osc_freq != 0) {
-		cfg.ext_osc_freq = args.ext_osc_freq;
+	uint8_t val = 0x34;
+	mlsdr_write_register(mlsdr, MLSDR_REG_SCRATCH, val);
+	uint8_t read;
+	mlsdr_read_register(mlsdr, MLSDR_REG_SCRATCH, &read);
+	if (read != val) {
+		mlsdr_log_error(mlsdr->logctx,
+						"Scratchpad read does not contain expected value (%02x != %02x)",
+						read, val);
+		return RESULT_CRITICAL;
 	}
+	return RESULT_SUCCESS;
+}
 
-	struct mlsdr *mlsdr = mlsdr_connect(cfg);
-	if (mlsdr == NULL) {
-		// We already get an error message from the library
-		return EXIT_FAILURE;
-	}
-
+static enum test_result test_sawtooth(struct mlsdr *mlsdr)
+{
+	enum test_result ret = RESULT_SUCCESS;
 	// Sawtooth pattern
 	mlsdr_adc_set_mode(mlsdr, MLSDR_ADCTL_MODE_PAT1);
-
 	mlsdr_adc_enable(mlsdr);
 
 	ssize_t chunk = 1000000;
-	ssize_t nsamples = 25000000 * 30; // 25Msps for 30 seconds
+	ssize_t nsamples = 15000000 * 20; // 15Msps for 20 seconds
 	int16_t *rawdata = calloc(chunk, sizeof(int16_t));
-
 	bool first = true;
 	int16_t at = 0;
 	while (nsamples != 0 && !atomic_load(&args.terminating)) {
@@ -123,6 +131,7 @@ int main(int argc, char *argv[])
 			} else {
 				if (at != rawdata[i]) {
 					mlsdr_log_warn(mlsdr->logctx, "Expected %d, got %d ([%d])", at, rawdata[i], i);
+					ret = RESULT_FAILURE;
 					at = rawdata[i];
 				}
 			}
@@ -134,6 +143,55 @@ int main(int argc, char *argv[])
 	}
 
 	free(rawdata);
+
+	return ret;
+}
+
+const char *test_result_name[] = {
+	[RESULT_SUCCESS] = "Success",
+	[RESULT_FAILURE] = "Failure",
+	[RESULT_CRITICAL] = "Critical"
+};
+
+int main(int argc, char *argv[])
+{
+	argp_parse(&argp_parser, argc, argv, 0, 0, &args);
+
+	atomic_store(&args.terminating, false);
+
+	struct mlsdr_connect_cfg cfg = MLSDR_DEFAULT_CFG;
+	cfg.loglevel = args.loglevel;
+	cfg.serno = args.serno;
+	if (args.ext_osc_freq != 0) {
+		cfg.ext_osc_freq = args.ext_osc_freq;
+	}
+
+	struct mlsdr *mlsdr = mlsdr_connect(cfg);
+	if (mlsdr == NULL) {
+		// We already get an error message from the library
+		return EXIT_FAILURE;
+	}
+
+	struct test tests[] = {
+		{
+			.name = "Scratchpad read/write",
+			.fn = test_scratchpad,
+		},
+		{
+			.name = "Sawtooth pattern generator",
+			.fn = test_sawtooth,
+		}
+	};
+
+	for (int i = 0; i < ARRAY_SIZE(tests); i++) {
+		struct test *test = &tests[i];
+		mlsdr_log_info(mlsdr->logctx, "========== %s ==========", test->name);
+		enum test_result result = test->fn(mlsdr);
+		mlsdr_log_info(mlsdr->logctx, "=========> %s", test_result_name[result]);
+		if (result == RESULT_CRITICAL) {
+			break;
+		}
+	}
 
 	mlsdr_destroy(mlsdr);
 }
