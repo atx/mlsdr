@@ -1,6 +1,7 @@
 
 #include <argp.h>
 #include <unistd.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <signal.h>
@@ -30,12 +31,8 @@ static struct argp_option argp_options[] = {
 struct arguments {
 	enum mlsdr_loglevel loglevel;
 	char *serno;
-	char *ppsfile;
-	uint8_t adcmode;
-	uint_least32_t ext_osc_freq;
 
 	struct mlsdr *mlsdr;
-	atomic_bool terminating;
 };
 
 static error_t parse_opt(int key, char *arg, struct argp_state *state)
@@ -104,13 +101,14 @@ static enum test_result test_sawtooth(struct mlsdr *mlsdr)
 	mlsdr_adc_enable(mlsdr);
 
 	ssize_t chunk = 1000000;
-	ssize_t nsamples = 15000000 * 20; // 15Msps for 20 seconds
+	ssize_t samples_max = 15000000L * 20; // 15Msps for 20 seconds
+	ssize_t nsamples = 0;
+	struct timespec start;
 	int16_t *rawdata = calloc(chunk, sizeof(int16_t));
 	bool first = true;
 	int16_t at = 0;
-	while (nsamples != 0 && !atomic_load(&args.terminating)) {
-		size_t toread = nsamples > 0 ? min(chunk, nsamples) : chunk;
-		ssize_t ret = mlsdr_read(mlsdr, rawdata, toread, 2000);
+	while (nsamples < samples_max) {
+		ssize_t ret = mlsdr_read(mlsdr, rawdata, chunk, 2000);
 		if (ret < 0) {
 			mlsdr_log_error(mlsdr->logctx, "Failed with %ld\n", ret);
 			break;
@@ -119,10 +117,14 @@ static enum test_result test_sawtooth(struct mlsdr *mlsdr)
 			mlsdr_log_error(mlsdr->logctx, "Timed out while waiting for samples\n");
 			break;
 		}
-
-		if (nsamples > 0) {
-			nsamples -= ret;
+		if (first) {
+			// There is no good way of figuring out the point at which the ADC
+			// actually starts up, so just drop the first chunk.
+			clock_gettime(CLOCK_MONOTONIC, &start);
+		} else {
+			nsamples += ret;
 		}
+
 		// Verify that we are getting sawtooth
 		for (int i = 0; i < ret; i++) {
 			if (first) {
@@ -142,6 +144,21 @@ static enum test_result test_sawtooth(struct mlsdr *mlsdr)
 		}
 	}
 
+	struct timespec end;
+	clock_gettime(CLOCK_MONOTONIC, &end);
+
+	mlsdr_adc_disable(mlsdr);
+
+	long timediff_ms = (end.tv_sec - start.tv_sec) * 1000 +
+					   (end.tv_nsec - start.tv_nsec) / 1000000;
+	float sample_rate = (float)nsamples / timediff_ms * 1e3;
+	mlsdr_log_info(mlsdr->logctx, "Measured %.6f Ms/s", sample_rate / 1e6);
+	// We are not expecting this to be exactly on point here, as the measuring
+	// interval is fairly short.
+	if (fabs(sample_rate - 15e6) > 0.04e6) {
+		ret = RESULT_FAILURE;
+	}
+
 	free(rawdata);
 
 	return ret;
@@ -157,14 +174,9 @@ int main(int argc, char *argv[])
 {
 	argp_parse(&argp_parser, argc, argv, 0, 0, &args);
 
-	atomic_store(&args.terminating, false);
-
 	struct mlsdr_connect_cfg cfg = MLSDR_DEFAULT_CFG;
 	cfg.loglevel = args.loglevel;
 	cfg.serno = args.serno;
-	if (args.ext_osc_freq != 0) {
-		cfg.ext_osc_freq = args.ext_osc_freq;
-	}
 
 	struct mlsdr *mlsdr = mlsdr_connect(cfg);
 	if (mlsdr == NULL) {
