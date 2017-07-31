@@ -30,6 +30,7 @@ static struct argp_option argp_options[] = {
 	{ "quiet",			'q', NULL,		0,		"Decrease verbosity", 0 },
 	{ "serno",			's', "SERNO",	0,		"Connect to a device with the given serial number", 0 },
 	{ "samples",		'n', "SAMPLES",	0,		"Capture SAMPLES samples.", 0 },
+	{ "data-file",		'o', "FILE",	0,		"Output samples to a file", 0 },
 	{ "pps-file",		'p', "FILE",	0,		"Store PPS timestamps in a file", 0 },
 	{ "ext-osc",		'e', "FREQ",	0,		"External oscillator frequency", 0 },
 	{ "adc-mode",		 OPTION_ADCMODE, "MODE", 0, "ADC pattern mode to use", 0 },
@@ -45,6 +46,7 @@ struct arguments {
 	char *serno;
 	ssize_t nsamples;
 	uint_least32_t frequency;
+	char *datafile;
 	char *ppsfile;
 	uint8_t adcmode;
 	uint_least32_t ext_osc_freq;
@@ -92,6 +94,9 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state)
 		break;
 	case 'n':
 		args->nsamples = atol(arg);
+		break;
+	case 'o':
+		args->datafile = arg;
 		break;
 	case 'p':
 		args->ppsfile = arg;
@@ -159,6 +164,7 @@ static struct arguments args = {
 	.loglevel = MLSDR_LOG_INFO,
 	.serno = NULL,
 	.nsamples = -1,
+	.datafile = NULL,
 	.ppsfile = NULL,
 	.frequency = 100000000,
 	.ext_osc_freq = 0,
@@ -200,6 +206,11 @@ int main(int argc, char *argv[])
 		pthread_create(&ppsthr, NULL, pps_thread, &args);
 	}
 
+	FILE *datafile = stdout;
+	if (args.datafile != NULL) {
+		datafile = fopen(args.datafile, "w");
+	}
+
 	if (args.adcmode != MLSDR_ADCTL_MODE_NORMAL) {
 		mlsdr_adc_set_mode(mlsdr, args.adcmode);
 	}
@@ -234,7 +245,7 @@ int main(int argc, char *argv[])
 			fprintf(stderr, "Failed with %d\n", (int)ret);
 			break;
 		}
-		ret = fwrite(rawdata, sizeof(int16_t), ret, stdout);
+		ret = fwrite(rawdata, sizeof(int16_t), ret, datafile);
 		if (ret < 0) {
 			break;
 		}
